@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 )
 
 type TapdReq struct {
@@ -31,36 +32,8 @@ const (
 	ClientReqFormDataDataType string = "formdata"
 )
 
-func (cr *ClientReq) Read(b []byte) (n int, err error) {
-
-	var (
-		mb []byte
-		ml int
-	)
-	l := len(b)
-	mb = []byte(cr.Param.Encode())
-	ml = len(mb)
-	if ml <= 0 {
-		return 0, io.EOF
-	}
-	if cr.lastReadInt == 0 {
-		b = mb[:l]
-		cr.lastReadInt = l
-		n = l
-	} else {
-		if ml-cr.lastReadInt >= l {
-			tmp := cr.lastReadInt + l
-			b = mb[cr.lastReadInt:l]
-			cr.lastReadInt = tmp
-			n = l
-		} else {
-			n = ml - cr.lastReadInt
-			b = mb[cr.lastReadInt:]
-			cr.lastReadInt = ml
-			err = io.EOF
-		}
-	}
-	return
+func (cr *ClientReq) GetReqBody() *strings.Reader {
+	return strings.NewReader(cr.Param.Encode())
 }
 
 type TapdBaseRespon struct {

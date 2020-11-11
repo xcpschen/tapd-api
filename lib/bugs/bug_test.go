@@ -1,28 +1,33 @@
 package bugs_test
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"testing"
+
+	"github.com/xcpschen/tapd-api/lib"
+	"github.com/xcpschen/tapd-api/lib/bugs"
 )
 
 func TestBugs(t *testing.T) {
-	// req := &bugs.BugReq{
-	// 	WorkspacesID: int64(49974820),
-	// }
-	// client := lib.NewClient("g7!fK6fy", "CD37F684-F728-28B7-76E4-54C06BB4FC5C")
-	// if err := client.Do(req); err != nil {
-	// 	t.Fatalf(err.Error())
-	// } else {
-	// 	data, err := req.GetReSponse()
-	// 	if err != nil {
-	// 		t.Fatalf(err.Error())
-	// 	}
-	// 	b, _ := json.Marshal(data)
-	// 	fmt.Println(string(b))
-
-	// }
-	b := new(B)
-	fmt.Println(b.ShowName("I'm b"))
+	req := &bugs.AddBug{}
+	req.Param = url.Values{}
+	req.Param.Add("workspace_id", "")
+	req.Param.Add("title", "测试api接口")
+	req.Param.Add("reporter", "tapd-api")
+	fmt.Println(req.Param.Encode())
+	client := lib.NewClient("", "")
+	if err := client.Do(req); err != nil {
+		t.Fatalf(err.Error())
+	} else {
+		data, err := req.GetReSponse()
+		if err != nil {
+			t.Fatalf(err.Error())
+		}
+		b, _ := json.Marshal(data)
+		fmt.Println(string(b))
+	}
 }
 
 type A struct {

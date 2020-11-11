@@ -49,8 +49,9 @@ func (c *Client) setHTTPReq(tr *ClientReq) *http.Request {
 	if c.authorization == "" {
 		c.setAuthorization()
 	}
-	r, _ := http.NewRequest(tr.Method, TapdAPIBaseURL+tr.URL, tr)
+	r, _ := http.NewRequest(tr.Method, TapdAPIBaseURL+tr.URL, tr.GetReqBody())
 	r.Header.Add("Authorization", c.authorization)
+	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	return r
 }
 func (c *Client) Do(r IRequest) error {

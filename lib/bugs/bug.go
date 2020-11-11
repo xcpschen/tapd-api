@@ -100,3 +100,23 @@ func (p *BugReq) GetReSponse() (data []Bug, err error) {
 	}
 	return
 }
+
+type AddBug struct {
+	TapdReq
+}
+
+func (p *AddBug) Req() *ClientReq {
+	return &ClientReq{
+		Method: "POST",
+		URL:    "bugs",
+		Param:  p.Param,
+	}
+}
+func (p *AddBug) GetReSponse() (data Bug, err error) {
+	tmp := map[string]Bug{}
+	if err = p.SetReSponse(&tmp); err != nil {
+		return
+	}
+	data = tmp[bugsKey]
+	return
+}

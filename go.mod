@@ -1,3 +1,3 @@
-module github.com/csl/tapd-api
+module github.com/xcpschen/tapd-api
 
 go 1.14

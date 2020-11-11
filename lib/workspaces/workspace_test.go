@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/csl/tapd-api/lib"
-	"github.com/csl/tapd-api/lib/workspaces"
+	"github.com/xcpschen/tapd-api/lib"
+	"github.com/xcpschen/tapd-api/lib/workspaces"
 )
 
 func TestProjectList(t *testing.T) {

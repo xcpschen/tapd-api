@@ -3,7 +3,7 @@ package workspaces
 import (
 	"fmt"
 
-	. "github.com/csl/tapd-api/lib"
+	. "github.com/xcpschen/tapd-api/lib"
 )
 
 type Project struct {

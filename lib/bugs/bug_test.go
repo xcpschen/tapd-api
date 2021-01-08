@@ -10,6 +10,12 @@ import (
 	"github.com/xcpschen/tapd-api/lib/bugs"
 )
 
+const (
+	tapdkey   string = ""
+	tapdPwd   string = ""
+	companyID int64  = 0000
+)
+
 func TestBugs(t *testing.T) {
 	req := &bugs.AddBug{}
 	req.Param = url.Values{}
@@ -29,20 +35,19 @@ func TestBugs(t *testing.T) {
 		fmt.Println(string(b))
 	}
 }
-
-type A struct {
-	Name string
-}
-
-type B struct {
-	A
-}
-
-func (a *A) ShowName() string {
-	return "a"
-}
-
-func (b *B) ShowName(a string) string {
-	fmt.Println(b.A.ShowName())
-	return a
+func TestBugsReq(t *testing.T) {
+	req := &bugs.BugReq{
+		WorkspacesID: 33392860,
+	}
+	client := lib.NewClient(tapdkey, tapdPwd)
+	if err := client.Do(req); err != nil {
+		t.Fatalf(err.Error())
+	} else {
+		data, err := req.GetReSponse()
+		if err != nil {
+			t.Fatalf(err.Error())
+		}
+		b, _ := json.Marshal(data)
+		fmt.Println(string(b))
+	}
 }

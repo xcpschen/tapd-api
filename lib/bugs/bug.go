@@ -2,6 +2,7 @@ package bugs
 
 import (
 	"fmt"
+	"net/url"
 
 	. "github.com/xcpschen/tapd-api/lib"
 )
@@ -15,12 +16,35 @@ type BugReq struct {
 }
 
 func (p *BugReq) Req() *ClientReq {
-
+	if p.Page == 0 {
+		p.Page = 1
+	}
+	if p.Limit == 0 {
+		p.Limit = 200
+	}
+	if p.Param == nil || len(p.Param) == 0 {
+		p.Param = url.Values{}
+	}
+	p.Param.Add("workspace_id", fmt.Sprintf("%d", p.WorkspacesID))
+	p.Param.Add("page", fmt.Sprintf("%d", p.Page))
+	p.Param.Add("limit", fmt.Sprintf("%d", p.Limit))
+	fmt.Println(p.Param.Encode())
 	return &ClientReq{
 		Method: "GET",
-		URL:    fmt.Sprintf("bugs?workspace_id=%d", p.WorkspacesID),
+		URL:    fmt.Sprintf("bugs?%s", p.Param.Encode()),
 	}
 }
+
+const (
+	//BugNewStatus new bug
+	BugNewStatus string = "new"
+	//BugProcessStatus bug have been accepted
+	BugProcessStatus string = "in_progress"
+	//BugRejectStatus bug have been rejected
+	BugRejectStatus string = "rejected"
+	//BugResolvedStatus bug have been resolved
+	BugResolvedStatus string = "resolved"
+)
 
 type BusResponse []map[string]Bug
 type Bug struct {
